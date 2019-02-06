@@ -1,0 +1,114 @@
+import processing.serial.*;
+import processing.core.PApplet;
+
+Serial myPort;
+
+//Defines
+public static final double PPR = (341.2);
+public static final int R = 325 / 100; //radius of the wheel in cm
+public static final int T = 100; // time between samples in ms (intervalo entre envios consecutivos de amostras)
+public static final int L = 19; // lenght of the axis between both wheels in cm
+public static final int N_S = 10; //number of samples took before calculating the position
+
+
+public static int cont_rev_l;
+public static int cont_rev_r;
+
+public static double[] linear_v_l = new double[N_S];
+public static double[] linear_v_r = new double[N_S];
+public static double[] v_a = new double[N_S];
+public static double[] v_x = new double[N_S];
+public static double[] v_y = new double[N_S];
+public static double pos_a_aux = 0;
+
+public static int pos_x_b = 0;
+public static int pos_y_b = 0;
+public static int pos_a_b = 0;
+public static int pos_x = 0;
+public static int pos_y = 0;
+public static int pos_a = 0;
+
+public static float intg_x = 0;
+public static float intg_y = 0;
+public static float intg_a = 0;
+
+public static int i = 0;
+public static int z;
+
+
+String coordnt="0";
+int ref_x=0;
+int ref_y=0;
+
+void setup(){
+  size(600, 600);
+  background(255, 255, 255);
+  stroke(33);
+  strokeWeight(5);
+
+  myPort = new Serial(this, "COM5", 9600); // Starts the serial communication
+  // myPort.bufferUntil('\n'); // Defines up to which character the data from the serial port will be read. The character '\n' or 'New Line'
+
+}
+ 
+void draw(){
+  line(50+ref_x,550-ref_y,50+pos_x,550-pos_y);
+  ref_x=pos_x; ref_y=pos_y;
+  Calculations();
+}
+
+
+//Cantor Pairing Function
+public static void Cantor_DF(int z){
+  int w = (int) Math.floor((Math.sqrt((8 * z) + 1) - 1) / 2);
+  
+  int t = ((w * w) + w) / 2;
+  
+  cont_rev_r = (int)(z - t);
+  cont_rev_l = (int)(w - cont_rev_r);
+}
+
+//Calculations Function
+public static void Calculations() {
+  
+  void serialEvent (Serial myPort){ // Checks for available data in the Serial Port
+  coordnt = myPort.readStringUntil('\n'); //Reads the data sent from the Arduino (the String "LED: OFF/ON) and it puts into the "ledStatus" variable
+  z = Integer.parseInt(coordnt);
+  
+    Cantor_DF(z); //z is the received value
+  //update vel
+    if (i <= N_S){
+      
+      linear_v_l[i] = 2 * Math.PI * R * cont_rev_l * (1 / (T * PPR));
+      linear_v_r[i] = 2 * Math.PI * R * cont_rev_r * (1 / (T * PPR));
+
+      v_a[i] = (linear_v_l[i] - linear_v_r[i]) / L;
+      pos_a_aux = T * v_a[i];
+
+      v_x[i] = ((linear_v_l[i] + linear_v_r[i]) / 2) * Math.cos(pos_a_aux * Math.PI / 180);
+      v_y[i] = ((linear_v_l[i] + linear_v_r[i]) / 2) * Math.sin(pos_a_aux * Math.PI / 180);
+
+      i++;
+    }
+
+  //update pos
+    if (i == N_S){
+
+      for (i = 0; i >= 0;i--){ //discretization of the integral
+        intg_x += T * v_x[i]; //time between samples times the velocity in that instance
+        intg_y += T * v_y[i];
+        intg_a += T * v_a[i];
+      }
+
+      pos_x = pos_x_b + (int) Math.round(intg_x);
+      pos_y = pos_y_b + (int) Math.round(intg_y);
+      pos_a = pos_a_b + (int) Math.round(intg_a);
+
+      pos_x_b = pos_x;
+      pos_y_b = pos_y;
+      pos_a_b = pos_a;
+
+      //Update Graph every 1s
+    }
+  }
+}

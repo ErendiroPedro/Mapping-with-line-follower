@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Mapping with line follower</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+	<link href="style.css" rel="stylesheet">
+	<style>
+		img.img1 {
+			 float: right;
+		 }
+		img.img2 {
+			float: left;
+		}
+		font.text1 {
+			font-size: 150%;
+			text-align: center;
+		}
+		font.text2 {
+			font-size: 150%;
+			text-align: left;
+		}
+		font.text3 {
+			font-size: 70%;
+			text-align: center;
+			align-content: center;
+			align-items: center;
+		}
+		font.text4 {
+			font-size: 65%;
+			text-align: center;
+		}
+		font.text5 {
+			text-align: center;
+		}
+		a.anchor {
+			display: block;
+			position: relative;
+			top: -55px;
+			visibility: hidden;
+		}
+		div.list{
+			align-content: left;
+			text-align: left;
+		}
+		div.img3{
+			float: left;
+			align-content: center;
+			text-align: center;
+			padding-top: 100px;
+			padding-bottom: 170px;
+		}
+		div.img4{
+			float: right;
+			align-content: center;
+			text-align: center;
+			padding: 50px;
+		}
+	</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#Home">Mapping with line follower            <font class="text4"><i>By Elmer Graça & Erendiro Pedro</i></font></a>
+		<button class="navbar-toggler" type="data-toggle=collapse" data-target="#navbarResponsive">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav ml-auto">
+
+				<li class="nav-item"><a class="nav-link" href="#Introduction"> Introduction </a></li>
+				<li class="nav-item"><a class="nav-link" href="#Architecture"> Architecture </a></li>
+				<li class="nav-item"><a class="nav-link" href="#Hardware"> Hardware </a></li>
+				<li class="nav-item"><a class="nav-link" href="#Software"> Software </a></li>
+				<li class="nav-item"><a class="nav-link" href="#Results"> Results </a></li>
+				<li class="nav-item"><a class="nav-link" href="#Conclusions"> Conclusions </a></li>
+				<li class="nav-item"><a class="nav-link" href="#References"> References </a></li>
+
+			</ul>
+		</div>
+	</div>
+</nav>
+<div  class="container-fluid" id="HI" >
+	<div class="row">
+		<div class="col-md-12">
+			<img class="img1" src="Img/Logo.jpg" style="margin-left:50px;">
+				<p>Elmer Artur Brito da Graça 1161424@isep.ipp.pt
+				<br> Erendiro Sangueve Njundjuvili Pedro 1160555@isep.ipp.pt
+		</div>
+	</div>
+</div>
+
+
+<!-- Main Container -->
+<a class="anchor" id="Home"></a>
+<div class="container main">
+	<div class="row" >
+		<div class="col-lg-12">
+			<!--- Video  -->
+			<div align="center" class="embed-responsive embed-responsive-16by9">
+				<iframe class="embed-responsive-item" src="Img/LineF.mp4"></iframe>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<a class="anchor" id="Introduction"></a>
+<div  class="container-fluid" align="justify">
+	<h2 style="color: black" align="center" padding-top="175px">Introduction</h2>
+		<p>From the earliest times, the search for knowledge has led the human kind through several exploratory crossings, but with the emergence of field robots it has become possible to collect data with greater rigor and systematization,
+			this type of robot, usually equipped with a variety of sensors, performs tasks in unstructured, little-known, and often dangerous environments. Among its
+			applications are space exploration, mining, nuclear accident cleanup, motorway navigation, volcano exploration, and many others.  Since then new generation of robots
+			were developed, among which, multi-robot exploration. This method consists in a team of multiples robots coordinated to explore different sectors of a broader area ,
+			each one building his own local grid map, and then sharing with the other bots, constructing a major global map of the area. Through this approach, it’s achievable a
+			faster exploration, more accurate results, and the exploration process isn’t severely by the loss of a single robot. This methodology also applies on data retrieval
+			missions (minerals, etc.), or equipment transportation where the robot responsible for this task is more expensive, being safer to send other robots ahead for scouting
+			the path. And these are AGVs.</p>
+		<p>AGV or Automated guided vehicles consist of vehicles capable of traveling in defined paths without the need for direct intervention by an operator or driver,
+			usually by means of tag followers or other flags. In industry, they are often used to automate everyday tasks, simple and repetitive, due to their scarce
+			level of autonomy. AGVs have different models/configurations that depend on the desired application, but most of them can be subdivided into 3 categories
+			of navigation: wire navigation: where the control of the motors is done by means of sensors that detect radio frequencies transmitted by a wire slightly
+			below ground; laser: the AGV carries a laser that transmits a signal and a tower reflects it back, the Anglo and the distance between the two are stored and
+			compared with a map already in memory, thus being possible to make the necessary adjustments for AGV can navigate; and finally navigation via a line follower,
+			a line follower AGV is a vehicle guided automatically through a path defined by a black line in a white plane or vice-versa, or through an (invisible) magnetic
+			field, and that is the base model of our project. Some of the industrial applications are automated equipment/material carrier, domestic as floor cleaning AGV and also automobile vehicles for the road.</P>
+		<p><div align="center">Thus in the scope of the final project of LABS IS we follow the line of this field of robotics, developing a project based on the basic model of a line follower AGV
+			(follow black line on white surface), but with addition of two plus main features, those which are recording of the path travelled by the robot as the graphical drawing of the
+			same creating like a path map. To achieve such performance of these goals will be resorting to not only the knowledge of electronic and programming but also of mathematical
+			procedures, between them one many time used for cryptography, the Cantor pairing function. And trough methodology not only achieved a fully functional AGV and through the path
+			to expand our knowledge on some of the much fields of science. Through this report, we expect to pass all the experience and development of this final project.</div></p>
+		<div class="text-center">
+			<img src="Img/LineFolw.jpg" class="img-fluid" alt="Line Follower AGV" width="500" height="200" align="center">
+			<figcaption class="figure-caption">
+				Figura 1 - Line Follower AGV
+			</figcaption>
+		</div>
+</div>
+
+<a class="anchor" id="Architecture"></a>
+<div class="container-fluid">
+	<h2 style="color: black" >Architecture</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<p>The line follower’s architecture is presented below. The circuit is powered by a single power supply, a 12V battery, used to power de DC motors through the H-Bridge
+				and the voltage regulator that will provide a fixed 5V output that the microcontroller and other sectors of the circuit that work on that voltage level.
+				The 5V voltage supplier in its turn will power a 3V voltage regulator necessary to power the encoders.</p>
+			<p>The brain of the project is the microcontroller, which is the sector responsible for all data processing and control of the hole circuit. The microcontroller used is the
+				ATMega328P.</p>
+			<p>The infrared sensors are responsible to detect the line follower, this is real-time control of the orientation of the line follower relative to the line.
+				This control will be done with three sensors. For the standard positioning of the AGV, it will be the middle sensor above the black line and the to side sensors on
+				white surface (out of the line).  </p>
+			<p>The Bluetooth sector will have the Bluetooth module HC-05 responsible for the data exchange between the microcontroller and the external program responsible for
+				receiving the coordinates and draw the map.</p>
+			<p>The computer using processing programmed interface will receive the data incoming from the HC-05 module and draw the map of the path done. Through mathematical
+				applications, the data sent from the encoders are processed in coordinates in a grid considering the point from where the line follower left the origin coordinate.
+				For the map, a drawing will be using the Processing IDE, which offers an easy process to connect the program directly via Bluetooth to the HC-05. Due to the ATMega
+				isn’t capable to perform the mathematical operations due to their complexity, these will be performed to on the Processing. After the program processes
+				the raw data from the encoders into coordenates, it pinpoints these coordinates into a grid and then neatly connecting them by lines, giving a relatively accurate
+				path map.</p>
+			<p>The H-Bridge makes the connection between the microcontroller and the DC motors. Supplying 12V power to the motor according to with the control of the PWM coming from
+				the microcontroller and controlling the rotation sense controlled by the output pins of the microcontroller.</p>
+			<p>	The LED it’s the LED that will blink at the frequency of 100Hz.</p>
+		</div>
+	</div>
+	<div class="text-center">
+		<img src="Img/Arquitetura.PNG" class="img-fluid" alt="Architecture" width="800" height="600">
+		<figcaption class="figure-caption">
+			Figura 2 – Architecture
+		</figcaption>
+	</div>
+	<br><br><br><br>
+	<div class="img3">
+		<img src="Img/Schematic.PNG" class="img-fluid" alt="Schematic" width="1000" height="820" >
+		<figcaption class="img2"  class="figure-caption" al>
+			Figura 3 – Schematic
+		</figcaption>
+	</div>
+	<div class="list">
+		<font class="text1">Materials List</font></P>
+		<ul style="list-style-type:none">
+			<li><b>Power supply:</b>
+				<ul style="list-style-type:disc">
+					<li>Battery: 1 Ni-MH AA rechargeable de 12V 1300mAh</li>
+					<li>7805 Voltage regulator</li>
+					<li>1N4004</li>
+					<li>Capacitor 0.33µF</li>
+					<li>Capacitor 0.31µF</li>
+					<li>Resistor 470ohm</li>
+					<li>LED (red)</li>
+					<li>ESP8266 AMS1117 Voltage regulator 5V to 3.3V</li>
+				</ul>
+			</li>
+			<li><b>Mechanical structure:</b>
+				<ul style="list-style-type:disc">
+					<li>Chassis</li>
+					<li>2x Wheels (diameter-67mm thick-26.5mm)</li>
+					<li>Roll caster</li>
+					<li>IR sensor support(4x PCB 2x8cm; 12x 6pin female header; 2x 10 pin male header; 12 jump wires)</li>
+				</ul>
+			</li>
+			<li><b>Motor Circuit:</b>
+				<ul style="list-style-type:disc">
+					<li>L298N Dual Full-Bridge Driver</li>
+					<li>2x 12v 350 rpm DC Gear Motor with Hall Encoder</li>
+					<li>8x 1N4934</li>
+					<li>220µF/35V Capacitor</li>
+				</ul>
+			</li>
+			<li><b>Infrared sensor circuit</b>
+				<ul style="list-style-type:disc">
+					<li>3x Infrared LED</li>
+					<li>3x Photodiode</li>
+					<li>Resistors: 3x 150ohm, 3x 1kohm, 3x 10kohm</li>
+					<li>3x Potentiometer 10kohm</li>
+					<li>2x LM358</li>
+					<li>3x LED (red)</li>
+				</ul>
+			</li>
+			<li><b>Control/Communication:</b>
+				<ul style="list-style-type:disc">
+					<li>ATMega 328P</li>
+					<li>Bluetooth HC-05 module</li>
+					<li>Switches (ON/OFF, Operating Mode)</li>
+					<li>2x Pressure button</li>
+					<li>2x Resistor 10kohm</li>
+					<li>LED (yellow)</li>
+					<li>220ohm resistor</li>
+				</ul>
+			</li>
+	</div>
+</div>
+
+<br>
+
+<a class="anchor" id="Hardware"></a>
+<div class="container-fluid">
+	<h2 style="color: black" >Hardware</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-12">
+				<font class="text1"><b>Power supply </b></font>
+			<p>To supply  5V to the microcontroller and other parts of the circuit which requires it to function it was used the fixed voltage regulator 7805 IC, which provides a constant 5V on the output. The 7805 is powered on the input by a 12V battery which also powers the motors through the motor driver circuit. For purpose of noise reduction, is put a 0.22 µF capacitor on the input, and on the output is used a 0.1 µF to help with the transient response, change form a steady state, of the output. A LED is connected to the output to indicate when the power is ON/OFF.</p>
+			<p>Has yet another voltage regulator with a fixed output of 3.3V to power the encoders which work on this voltage level. The ESP8266 AMS1117 voltage regulator transforms 5V in it’s input to a steady 3.3V on his output. This is powered by the 5V voltage regulator 7805.</p>
+			<p>Because of the use of a single 12V battery to supply power to the whole circuit, it may cause problems to the circuit due to discharge, causing disrupting to voltage levels on different parts of the circuit, leading to malfunction.</p>
+		</div>
+			<div class="text-center">
+				<img src="Img/Voltage%20Regulator.png" class="img-fluid" alt="Power Supply" width="600" height="400">
+				<figcaption class="figure-caption">
+					Figura 4 – Power Supply
+				</figcaption>
+			</div>
+			<div class="col-md-12">
+				<font class="text1"><b>IR Sensors  </b></font>
+				<p>For line detection, it’s used IR sensors, and the detection is based on the IR LED and photodiode’s light features. The sensors circuit creates a logic output comparing a fixed voltage value defined by a potentiometer with a voltage drop of a resistance, series to the photodiode, that varies with the amount of light that incident on the photodiode.</p>
+				<p>The AmpOp works as a comparator, where the two inputs are the voltage drop of the potentiometer, non-inverting input, and the voltage drop on R1, inverting output, which is in series with the photodiode. When the photodiode is not receiving any IR rays the voltage drop on the R1 resistance is higher than the one one the potentiometer the output goes low. The light incident on the photodiode the voltage drop on the R1 drops, due to the conduction of the photodiode (current originated by the photodiodes), when the voltage on R1 becomes lower than the voltage drop of the potentiometer the output goes high. With the potentiometer, we can adjust the amount of radiation necessary to make the output go high. This feature is useful when IR sensors are used for object detection to adjust the distance that the detention occurs.</p>
+				<p>So positioning the sensors side-by-side with a directivity probably of 45 degrees, so the photodiode will receive reflected light emitted by the infrared LED. As the reflectance of the light colored surface is high, the infrared light emitted by IR LED will be maximum reflected and will be detected by the photodiode. On the contrary to colored surfaces, black surfaces completely absorb light, so the light incident on the photodiode is null. So when the IR sensor is above the surface the output will be high, and when above the black line the output will be low. Using three IR sensors, you can see the positioning of the robot to the black line, and based on the positioning perform an action (move forward, turn left, etc). Connecting a LEd in the output of each sensor allows to easily visualize whether they're active or not.</p>
+				<p>Taking into account the information described above mechanical support where the IR sensors would be held was designed and built to achieve such conditions. The structure of the support is attached to the robot in a way that the sensors are held about 4.5cm from the ground. The supports contains three groups of sensors distancing between each other 0.6 cm, and in each group, the IR LED and the Photodiode is 3.5 to 4 mm apart. To avoid the radiation reflectance of one group to affect the adjacent one the IR LEDs and photodiodes isolate on the side with black tape.</p>
+			</div>
+			<div class="text-center">
+				<img src="Img/IR%20Sensor.png" class="img-fluid" alt="IR Sensors" width="800" height="600">
+				<figcaption class="figure-caption">
+					Figura 5 – Infrared sensors circuit
+				</figcaption>
+			</div>
+			<div class="col-md-12">
+				<font class="text1"><b>Motor Driver/ H-Bridge  </b></font>
+				<p>To control the velocity of the motor it is necessary to have a circuit for that purpose The simplest circuit uses a transistor. But in this case, it will be used an H-Bridge which allows controlling both velocity and rotation sense.</p>
+				<p>Given the internal architecture of the motor driver LM298, it can be seen that the ENA and ENB control whether the motors are ON/OFF, as it is connected to all AND gates, if its low, all gates outputs will be low. If it is high, the output depends on the IN. If the velocity would be controlled by IN pins, it would be needed four PWM signals. Due there is only two available ( OC0A/B), the signals will be inserted on de enable pins. So the velocity will be in function of the average voltage value result of duty cycle PWM, that defines how much time the transistor is ON or OFF. By manipulating these times, changes the average value of the voltage, therefore the velocity of the motor.</p>
+				<p>The diodes' purpose is for circuit protection. In case the motors rotation sense cause a current to invert the sense, the diode makes sure that the current flows safely through them and not to the LM298. The capacitor added to the input of the bridge is to deal with the ripple-current through the bridge. 	Adopt a high-capacity filter capacitor and a freewheeling diode that protects devices in the circuit from being damaged by the reverse current of an inductive load, enhancing reliability</p>
+				</div>
+				<div class="text-center">
+					<img src="Img/Motor%20Driver.png" class="img-fluid" alt="Motor Driver" width="800" height="600">
+					<figcaption class="figure-caption">
+						Figura 6 – Motor Driver/H-Bridge
+					</figcaption>
+				</div>
+				<font size="4"><b>Encoders</b></font>
+			<div class="img4">
+				<img src="Img/Encoder.JPG" alt="Encoder" width="350" height="150">
+				<figcaption class="figure-caption">
+					Figura 7 – Encoder
+				</figcaption>
+			</div>
+				<p>One of the main function of this line follower, the map drawing, relies on the use of
+					odometry to track the position of the line follower.</p>
+				<p><i>“Odometry is the use of data from motion sensors to estimate the change in position over time. It is used in robotics by some legged or wheeled robots to estimate their position relative to a starting location. This method is sensitive to errors due to the integration of velocity measurements over time to give position estimates. Rapid and accurate data collection, instrument calibration, and processing are required in most cases for odometry to be used effectively.”</i></p>
+				<p>In this case, it is used the data provided by encoders, rotary encoders. The DC motors used in this project come with built-in encoders. The encoders are devices through which we can track the velocity of the motors through angular position or motion. This working principle is due it’s internal architecture, where there are a light emitter and receiver (laser) and between them a disk grooves. The disk is attached to the motor shaft so it spins at the same velocity. As it rotates, it will interrupt the beam of light, allowing it to pass only on the groove. This causes on the output a sequence of pulses (square wave). These pulse will be the data used for the odometry.</p>
+
+				<div class="col-md-12">
+				<font class="text1"><b>Bluetooth Module  </b></font>
+				<p>The communication with the computer in order to exchange the data relative to the coordinates of the line follower necessary to draw the path map will be through serial communication, SPI protocol, using the USART feature of the ATMega328P. </p>
+				<p>HC-05 Bluetooth Module is an easy to use Bluetooth SPP (Serial Port Protocol) module,
+					designed for transparent wireless serial connection setup. Its communication is via serial
+					communication which makes an easy way to interface with controller or PC. HC-05 Bluetooth
+					module provides switching mode between master and slave mode which means it able to use
+					neither receiving nor transmitting data. But in this project will be using the module on communication mode (KEY pin in the air).</p>
+			</div>
+			<div class="text-center">
+				<img src="Img/Bluetooth%20Module.png" class="img-fluid" alt="Bluetooth Module" width="800" height="600">
+				<figcaption class="figure-caption">
+					Figura 8 – ATMega328P_HC-05 connection circuit
+				</figcaption>
+			</div>
+		</div>
+	</div>
+</div>
+
+<br>
+
+<a class="anchor" id="Software"></a>
+<div class="container-fluid">
+	<h2 style="color: black" >Software</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-12">
+				<p>The program consists essentially of 3 features, line follower, replay and mapping:</p>
+				<ul style="list-style-type:square">
+					<li> Line Follower: <br>In order to follow the line, 3 infrared sensors are used to adjust the speed of the wheels so that the vehicle is always on the right track. For this, a system of 7 states was used, corresponding to the possible
+						combinations for the 3 sensors, as shown in the following table: </li>
+					<br>
+					LS-left sensor / MS-middle sensor / RS-right sensor<br>
+					LM-left motor / RM-right motor<br><br>
+
+					Vmax – “set maximum speed used”<br>
+					Vmin – “set minimum speed used”<br>
+					V0 - “stop”<br>
+					R – “rotate in reverse”<br><br>
+
+					0 - “on black” / 1 - “on white”<br>
+					<br>
+
+					<table class="table">
+						<thead>
+						<tr>
+							<th scope="col">State</th>
+							<th scope="col">Description</th>
+							<th scope="col">Motors Speed</th>
+							<th scope="col">Go Forward</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<th scope="row">0</th>
+							<td>LS-1 / MS-0 / RS-1</td>
+							<td>LM-Vmax / RM-Vmax</td>
+							<td>Go Forward</td>
+						</tr>
+						<tr>
+							<th scope="row">1</th>
+							<td>LS-0 / MS-0 / RS-0</td>
+							<td>LM-Vmax / RM-Vmax</td>
+							<td>Go Forward</td>
+						</tr>
+						<tr>
+							<th scope="row">2</th>
+							<td>LS-0 / MS-1 / RS-1</td>
+							<td>LM-Vmin / RM-Vmax</td>
+							<td>Turn Left</td>
+						</tr>
+						<tr>
+							<th scope="row">3</th>
+							<td>LS-1 / MS-1 / RS-0</td>
+							<td>LM-Vmax / RM-Vmin</td>
+							<td>Turn Right</td>
+						</tr>
+						<tr>
+							<th scope="row">4</th>
+							<td>LS-0 / MS-0 / RS-1</td>
+							<td>LM-Vmax(R) / RM-Vmax</td>
+							<td>Turn Left (abruptly)</td>
+						</tr>
+						<tr>
+							<th scope="row">5</th>
+							<td>LS-1 / MS-0 / RS-0</td>
+							<td>LM-Vmax / RM-Vmax(R)</td>
+							<td>Turn Right (abruptly)</td>
+						</tr>
+						<tr>
+							<th scope="row">6</th>
+							<td>LS-1 / MS-1/ RS-1</td>
+							<td>LM-V0 / RM-V0</td>
+							<td>Stop (end of the runway)</td>
+						</tr>
+						</tbody>
+					</table>
+					<br>
+					<div class="text-center">
+						<img src="Img/flowc_change_state.png" class="img-fluid" alt="flowc_change_state" width="1000" height="800">
+						<figcaption class="figure-caption">
+							Figura 9 – Change_State
+						</figcaption>
+					</div>
+					<br><br>
+					<li> Replay:
+						<br>
+						<p>Due to the states system that is being implemented, any path traveled will correspond to a certain sequence of states, where the change between states occurs at a given instant. That said, in order to repeat with 100% accuracy the route traveled, would be necessary to store all (in two vectors, for example) the states to which the vehicle was subject and all the moments in which the state changed during his path. But since the microcontroller has limited memory (N, positions for each vector of type "int") will be only store periodically (Tsample) the state and the respective instant if any change of state occur. Thus, for a track that takes a total of Ttotal (in ms) to be traversed, Tsample (in ms) is given by:
+							<br><br>
+						<div class="text-center">
+							<img src="Img/tsample.png" class="img-fluid" alt="Motor Driver" width="200" height="100">
+							<figcaption class="figure-caption">
+								Figura 10 – Tsample formula
+							</figcaption>
+						</div>
+						<br><br>
+						After some tests it was found that there were about 650 available positions for each "int" type vector, thus, N = 650, and assuming the route will be completed in less than 5 min (300,000ms), Ttotal = 300,000 therefore the vectors can be updated every ~ = 462ms (in the limit), so is possible to select any Tsample> 462ms, and the higher the Tsample the smaller the precision in the repetition of the track, on the other hand, the smaller the Tsample the greater the probability of overflowing the vectors before the vehicle has completed the route.
+						With that said, Tsample = 450ms was selected.
+						<p>Finally, in order to repeat the path, it is enough to go sequentially to the positions of the vectors (where the states and the instants where state changes are stored) and to put the state (stored in the first vector) in the vehicle, wait until the next change of state (stored in the other vector), and so on until all the filled positions of the vectors are traversed.</p>
+						</p>
+						<br>
+						<div class="text-center">
+							<img src="Img/flowc_replay.png" class="img-fluid" alt="flowc_replay" width="1000" height="800">
+							<figcaption class="figure-caption">
+								Figura 11 – Replay
+							</figcaption>
+						</div>
+						<br><br>
+					</li>
+					<br>
+					<li>Mapping: <br> Two encoders are used to map the traversed path, one in each motor, so it is intended to convert the signals obtained by the encoders into positional data of the vehicle, and the process can be described as follows:
+						First collect the data acquired by the encoders (pulses), and with these, achieve an estimate of the rotation of the motors.
+						At a time interval T, the output of the encoders is a square wave whose number of pulses varies according to the speed of the motor. To account for the number of pulses in the time interval, each output of the encoders is connected to an external interrupt that increments a counter each time it is triggered (programmed to be triggered "on the rising edge"), so, at the end of T the value contained in the counter will be the number of pulses. Knowing how many pulses there are in a complete revolution (PPR), in the selected range (T), the number of revolutions (R) will be proportional to the number of pulses (N) obtained with respect to the encoder PPR, in another form :
+						<br>
+						<br>
+						<div class="text-center">
+							<img src="Img/Eq_1.gif" class="img-fluid" alt="Eq1" width="100" height="200">
+							<figcaption class="figure-caption">
+								Figura 12 – Equation 1
+							</figcaption>
+						</div>
+						<div align="center"><font class="text3"><i>R - number of turns            N - number of pulses            PPR - pulses per resolution</i></font></div>
+						<br>
+						Thus the number of revolutions per unit time is obtained, in other words the angular velocity (𝛚), therefore:
+						<br>
+						<br>
+						<div class="text-center">
+							<img src="Img/Eq_2.gif" class="img-fluid" alt="Eq2" width="100" height="200">
+							<figcaption class="figure-caption">
+								Figura 13 - Equation 2
+							</figcaption>
+						</div>
+						<div align="center"><font class="text3"><i> 𝛚  - angular velocity</i></font></div>
+						<br>
+						<br>
+						Having said that, and knowing that the wheels in question have a radius r, the linear velocity of each wheel will be given by:
+						<br><br>
+						<div class="text-center">
+							<img src="Img/Eq_3.gif" class="img-fluid" alt="Eq3" width="150" height="200">
+							<figcaption class="figure-caption">
+								Figura 14 - Equation 3
+							</figcaption>
+						</div>
+						<div align="center"><font class="text3"><i>V - Linear velocity      r - radius of the wheel</i></font></div>
+						<br>
+						<div class="text-center">
+							<img src="Img/Eq_4.gif" class="img-fluid" alt="Eq4" width="150" height="200">
+							<figcaption class="figure-caption">
+								Figura 15 - Equation 4
+							</figcaption>
+						</div>
+						<br>
+						<br>
+						Since r, T and PPR are constant, it can be said that the linear velocity of the wheel is obtained as a function of the number of pulses recorded in a given time interval.
+						From this point it follows that the position (mid-point between the two wheels) will be given by the velocity integral as a function of time:
+						<br><br>
+						<div class="text-center">
+							<img src="Img/Eq_5.gif" class="img-fluid" alt="Eq4" width="200" height="200">
+							<figcaption class="figure-caption">
+								Figura 16 - Equation 5
+							</figcaption>
+						</div>
+						<div align="center"><font class="text3"><i>Vd - velocity of the right wheel Ve - velocity of the left wheel  L - distance between the two wheels</i></font></div>
+						<br>
+						<div class="text-center">
+							<img src="Img/Eq_6.gif" class="img-fluid" alt="Eq4" width="200" height="200">
+							<figcaption class="figure-caption">
+								Figura 17 - Equation 6
+							</figcaption>
+						</div>
+						<div align="center"><font class="text3"><i>X - position on the x axis</i></font></div>
+						<br>
+						<div class="text-center">
+							<img src="Img/Eq_7.gif" class="img-fluid" alt="Eq4" width="200" height="200">
+							<figcaption class="figure-caption">
+								Figura 18 - Equation 7
+							</figcaption>
+						</div>
+						<div align="center"><font class="text3"><i>Y - position on the y axis</i></font></div>
+						<br>
+						Since there is a discrete function for velocity, it will be necessary to do a discretization of the integrals, then the position will be the sum of the velocities times the time interval in question.
+						When T is infinitesimally small we have the integral with 100% accuracy, however, for very small values of T the estimation of the speed of the motors becomes unreliable, so we must select a T as small as possible , but which can simultaneously give reliable estimates of velocity.
+						Finally, the position of the vehicle between the instants t1 and t2 will be given by:
+						<br><br>
+						<div class="text-center">
+							<img src="Img/Eq_1F.gif" class="img-fluid" alt="Eq4" width="200" height="200">
+							<figcaption class="figure-caption">
+								Figura 19 - Equation 8
+							</figcaption>
+						</div>
+						<br>
+						<div class="text-center">
+							<img src="Img/Eq_2F.gif" class="img-fluid" alt="Eq4" width="200" height="200">
+							<figcaption class="figure-caption">
+								Figura 20 - Equation 9
+							</figcaption>
+						</div>
+						<br>
+						<div class="text-center">
+							<img src="Img/Eq_3F.gif" class="img-fluid" alt="Eq4" width="200" height="200">
+							<figcaption class="figure-caption">
+								Figura 21 - Equation 10
+							</figcaption>
+						</div>
+						<br>
+						<br>
+						T = 100ms and | t2-t1 | = 1000ms (1s) were selected
+						<br>The encoder and vehicle have the following characteristics:
+						PPR = 341,2 , L = 19 cm , r = 3,25 cm
+						<br><br>
+						As can be seen, the calculations made here are too complex for the processing capacity of the microcontroller, so an external computer will be necessary to perform the more complex calculations and visualize the map. Thus the process described above will be divided into two phases
+						The first consists of reading and counting the number of pulses at the encoder output, processed and executed by the microcontroller. And a second phase that will focus on the treatment and visualization of the final map, which is under the responsibility of an external computer.
+						The data from phase 1 to phase 2 is sent through a Bluetooth module through serial communication, SPI protocol, using the USART feature of ATMega328P.
+						The output of phase 1 are two integers (corresponding to the number of pulses at the output of each encoder, in the time interval T) and in order to optimize the sending, a reversible mathematical function is used to combine two natural numbers into one ("Cantor pairing function", better explained below).
+						In phase 2, the data is received, decoded and finally proceed to the process already explained above.
+
+						<br><br>Cantor Pairing Function <br>
+						In mathematics, a pairing function is a process to uniquely encode two natural numbers into a single natural number. They are mostly used in coding problems, where a vector of integer values is to be folded onto a single integer value reversibly. "Cantor pairing function" is a primitive recursive pairing function that
+						demands less processing power from the encoding side, making it very suitable for this project. The encoding and decoding algorithm goes as follows:
+						<br><br>
+						<div class="row">
+							<div class="column">
+								<img src="Img/CPF_1.png" class="img-fluid" alt="Eq4" width="600" height="200">
+								<figcaption class="figure-caption">
+									Figura 22 - Cantor pairing function algorithm part 1
+								</figcaption>
+							</div>
+							<div class="column">
+								<img src="Img/CPF_2.png" class="img-fluid" alt="Eq4" width="500" height="200">
+								<figcaption class="figure-caption">
+									Figura 23 - Cantor pairing function algorithm part 2
+								</figcaption>
+							</div>
+						</div>
+						<br><br>
+						Note: <br>The resulting value will always be larger then each single value, but for each value being less than 573 (limit value for this project) the resulting value will
+						always be in the range of the class "unsigned int". After empirical tests was concluded that in the sample rate that is being used (T=100ms)
+						the number of pulses never surpasses the limit value, therefore this algorithm can be used.
+
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-12">
+				<font class="text1"><b>Initializations</b></font>
+				<br><br>
+				3 interrupts and 1 timer are being used.
+				2 interrupts connected to the encoders (already explained above), and 1 interrupt connected to a bush button used to activate the “replay” function, programmed as follows:
+				<br><br>
+				<div class="text-center">
+					<img src="Img/it_inits.png" class="img-fluid" alt="it_inits" width="800" height="800">
+					<figcaption class="figure-caption">
+						Figura 24 - initializations interrupts
+					</figcaption>
+				</div>
+				<br>
+				1 timer is being used to keep track of the time in the project, It was programmed to be activated at 10ms in order to be as flexible as possible so that it can track different time samples at the same time.
+				Following the calculations, it was programmed as follows:
+				<br><br>
+				<div class="text-center">
+					<img src="Img/calc_timer.png" class="img-fluid" alt="calc_timer" width="400" height="400">
+					<figcaption class="figure-caption">
+						Figura 25 - Timer calculation
+					</figcaption>
+					<div align="center"><font class="text3"><i> Foc - frequency in which the timer will be activated; N - prescaler value; Fclk - frequency of the clock; OCR - OCR value, between 0 and 255</i></font></div>
+					<br>
+				</div>
+				<div class="text-center">
+					<img src="Img/timer_inits.png" class="img-fluid" alt="timer_inits" width="800" height="800">
+					<figcaption class="figure-caption">
+						Figura 26 - Timer initializations
+					</figcaption>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<font class="text1"><b>USART</b></font><p>
+				USART stands for Universal Synchronous Asynchronous Receiver/Transmitter. This is of the synchronous type, i.e. the data bits are synchronized with the clock pulses. Some of the ATMega328P main features of the AVR USART are:
+				<ul style="list-style-type:disc">
+					<li>Full Duplex Operation (Independent Serial Receive and Transmit Registers)</li>
+					<li>High-Resolution Baud Rate Generator</li>
+					<li>Master Operation</li>
+				</ul>
+				Setting up the USART for serial communication follows a few steps:
+				<ul style="list-style-type:disc">
+					<li>Set de baud rate in both interlocutors of the communication;</li>
+					<li>Set the number of data bits that need to be sent;</li>
+					<li>In this case that is being only transmitted data, load the data(incoming from the encoder) in the buffer;</li>
+					<li>Enable the transmitter.</li>
+				</ul>
+				The pin used for serial communication on the microcontroller is the RDX(pin 2-PD0) and TxD(pin3-PD1). There is a third pin normally used that is the USART clock pin, but in this case, it will be used the Asynchronous Normal Mode,
+				therefore there is no need for clock pulses.<p>
+				<font size="3"><b>Baud Rate Generation</b></font><p>
+				The baud rate of USART is set using the 16-bit wide UBRR register. The UBRR value can be  calculated using the following equation:
+				<div class="text-center">
+					<img src="Img/Eq BAUD.png" class="img-fluid" alt="Eq BAUD" width="800" height="800">
+					<figcaption class="figure-caption">
+						Figura 27 - UBRR Equation
+					</figcaption>
+				</div>
+				If it is used a baud rate of 9600bits/second :
+				<div class="text-center">
+					<img src="Img/Calculation BAUD.png" class="img-fluid" alt="Calculation BAUD" width="400" height="400">
+					<figcaption class="figure-caption">
+						Figura 28 - UBRR Calculation
+					</figcaption>
+				</div>
+				<font size="3"><b>Setting the Number of Data Bits</b></font><p>
+				The data size used by the USART is set by the UCSZ2:0, bits in UCSRC Register. It will be used an 8-bit format data.<p>
+				<font size="3"><b>Configuring registers</b></font><p>
+				<div class="text-center">
+					<img src="Img/BAUD.png" class="img-fluid" alt="BAUD" width="800" height="800">
+					<figcaption class="figure-caption">
+						Figura 29 - USART register configuration
+					</figcaption>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<a class="anchor" id="Results"></a>
+<div class="container-fluid">
+	<h2 style="color: black" >Results</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-12" align="justify">
+				<p>In comparison to the previous stage of the project, it was achieved at least the functionality of line following by the AGV. This due to the correction of the malfunction of the line detection. This correction was made by replacing the sensors support with a more mechanical capable one, that allows as well a more fit placement/positioning of the sensors relative to the line. The sensors were isolated in the sides with black tape to prevent the IR radiation from interfering with adjacent sensors.
+					The replay and map drawing function weren´t succeeded.
+				<p><p></p><font size="4.8"><b>PCB</b></font><p>
+					It was attempted to design the printed circuit board for the project with the aid of the software KiCAd.
+					For this, it was redesigned the circuit previously made in Fritzing, it was necessary to create some symbols for some components such as
+					HC-05 and L298 due to the lack of accurate symbols in the existing libraries. It was also necessary to create custom footprints for these
+					symbols created and for other symbols which existing footprints on the libraries weren´t accurate with the physical characteristics of the
+					real components that are being used. With all the necessary footprints, it proceeded to the board layout. The board design was made following
+					designing rules of the PCB manufacturer OSHPARK, and the width of the traces calculated with the “Trace Width Calculator” online tool form
+					Advanced Circuits. In this stage, it was faced a
+					problem of drawing the traces. After arranging the components in the layout, the program wasn’t allowed to design traces between most of
+					the footprints, as when we would double click the desired pad to connect a trace, the trace wouldn’s appear. With this it wasn’t possible
+					to finish the PCB for the project circuit, remaining at this stage:
+				<div class="text-center">
+					<img src="Img/PCB.png" class="img-fluid" alt="PCB" width="1000" height="800">
+						<figcaption class="figure-caption">
+						Figura 30 - PCB
+					</figcaption>
+				</div>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<br>
+
+<a class="anchor" id="Conclusions"></a>
+<div class="container-fluid">
+	<h2 style="color: black" >Conclusions</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-12" align="justify">
+				<p>With the various tests performed and the results obtained, some conclusions can be drawn in the matters of actual performance, limitations and
+					possible improvements.
+					In comparison to the previous state of the project, it could be verified that the change of the sensors supports improved the line detection
+					function making it more accurate, and more error-proof from malfunctions such as IR radiation interference from adjacent sensors.
+					The substitution of the battery was also a major improvement as it eliminated constant power drops from the previous battery.
+					For the AGV performance, it was possible to verify some limitations: the line follower can´t perform T curves, as in it’s code in doesn’t
+					have an action attributed to such situation if it would turn left or right. If the line follower derails from the line it would stop assuming
+					that the path finished and wouldn’t try to get on track again.
+					The actual state of the project presents a wide room of future improvements:
+				<ul style="list-style-type:disc">
+					<li>Creation of a database where it would be stored the path maps designed by the line follower, and they could be accessed by the robot and replayed with the function replay;</li>
+					<li>The implementation for the second mode of operation that is object proximity detection using the IR sensors. This would be implemented by attaching the sensor support to a servo motor which would rotate to a position perpendicular to the floor( line follower) and parallel on which the sensors would be pointing to the front of the robot, making possible to avoid obstacles.
+						This could be used in parallel with the replay function in a way that the AGV would be possible to repeat a path and avoid obstacles that weren’t there before and resume the path.</li>
+
+				</ul>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<br>
+
+<a class="anchor" id="References"></a>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<h3 style="color: black">Articles and references</h3>
+			<br>
+			<table class="table">
+				<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col"></th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr >
+					<th scope="row">[1]</th>
+					<td><a href="http://iopscience.iop.org/article/10.1088/0264-9381/26/8/085012/meta" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>R. Casey and F. Ben, <I>Getting started with processing</I>. Sebastopol: O’Reilly Media, Inc., 2010.</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[2]</th>
+					<td><a href="http://www.optique-ingenieur.org/en/courses/OPI_ang_M02_C05/co/Contenu_32.html" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>Administradores eletronics hub, <I>7805 Voltage Regulator IC Circuit Working and Applications</I>. Available: <a href="https://www.electronicshub.org/understanding-7805-ic-voltage-regulator/" target="_blank"> https://www.electronicshub.org/understanding-7805-ic-voltage-regulator/</a> . [Accessed: 10-Dec-2018]</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[3]</th>
+					<td><a href="http://blockeng.com/technology/ftirtechnology.html" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>HI tecnologia - automação industrial, <I>O que é Encoder? Para que serve? Como escolher? Como interfacear? | HI Tecnologia</I>. Available: <a href="https://www.hitecnologia.com.br/blog/o-que-é-encoder-para-que-serve-como-escolher-como-interfacear/" target="_blank"> https://www.hitecnologia.com.br/blog/o-que-é-encoder-para-que-serve-como-escolher-como-interfacear/</a>. [Accessed: 28-Oct-2018]</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[4]</th>
+					<td><a href="https://www.renishaw.com/en/interferometry-explained--7854" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>newtonis, <I>High Performance Line Follower Robot: 12 Steps </I>, 2016. Available: <a href="https://www.instructables.com/id/High-performance-Line-follower-Robot/" target="_blank"> https://www.instructables.com/id/High-performance-Line-follower-Robot/</a>. [Accessed: 25-Dec-2018]</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[5]</th>
+					<td><a href="https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2012RG000390" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>Yash, <I>The USART of the AVR?» maxEmbedded</I>, 2013. Available: <a href="http://maxembedded.com/2013/09/the-usart-of-the-avr/" target="_blank"> http://maxembedded.com/2013/09/the-usart-of-the-avr/</a>. [Accessed: 02-Jan-2019]</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[6]</th>
+					<td><a href="http://hmi.stanford.edu/Description/HMI_Overview.html" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>Anusha, <I>Arduino Line Follower Robot</I>, 2017. Available: <a href="https://www.electronicshub.org/arduino-line-follower-robot/" target="_blank"> https://www.electronicshub.org/arduino-line-follower-robot/</a>. [Accessed: 23-Dec-2018]</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[7]</th>
+					<td><a href="https://ipfs.io/ipfs/QmXoypizjW3WknFiJnKLwHCnL72vedxjQkDDP1mXWo6uco/wiki/Interferometry.html" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>Saddam, <I>Arduino Line Follower Robot Code and Circuit Diagram</I>, 2015. Available: <a href="https://circuitdigest.com/microcontroller-projects/line-follower-robot-using-arduino" target="_blank">https://circuitdigest.com/microcontroller-projects/line-follower-robot-using-arduino</a>. [Accessed: 25-Nov-2018]</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[8]</th>
+					<td><a href="https://en.wikipedia.org/wiki/Michelson_interferometer" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>M. I. Ribeiro, <I>Localização em Robótica Móvel Odometria</I>, 1999.</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[9]</th>
+					<td><a href="https://en.wikipedia.org/wiki/Michelson_interferometer" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>S. K. Das, <I>Design and Methodology of Line Follower Automated Guided Vehicle-A Review</I>,  2016.</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[10]</th>
+					<td><a href="https://en.wikipedia.org/wiki/Michelson_interferometer" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>E. W. Weisstein, <I>Pairing Function</I>.</P></a> </td>
+				</tr>
+				<tr>
+					<th scope="row">[11]</th>
+					<td><a href="https://en.wikipedia.org/wiki/Michelson_interferometer" target="_blank"><P STYLE="margin-bottom: 0.5cm"><A NAME="_Ref153776244"></A>Jason Sachs, <I>How to Estimate Encoder Velocity Without Making Stupid Mistakes: Part I - Jason Sachs</I> 2012.Avaible: <a href="https://www.embeddedrelated.com/showarticle/158.php." target="_blank">https://www.embeddedrelated.com/showarticle/158.php.</a>. [Accessed: 20-Dec-2089]</P></a> </td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<!--- Connect -->
+
+</div>
+<!--- Footer -->
+<footer class="modal-footer">
+	<div class="container">
+		<span class="text-muted">
+			Webpage created and designed by Erendiro Pedro and Elmer Graça from Polythecnic Institute of Engeneering of Porto (ISEP)
+			<br> Last update: 02/2019
+		</span>
+	</div>
+</footer>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
